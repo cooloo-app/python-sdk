@@ -10,7 +10,8 @@ def main() -> int:
         args = [str(binary_path()), *sys.argv[1:]]
         if os.name != "nt":
             os.execv(args[0], args)
-        proc = subprocess.Popen(args)
+        # Explicit handles preserve redirected streams through the Python launcher.
+        proc = subprocess.Popen(args, stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr)
         try:
             return proc.wait()
         except KeyboardInterrupt:

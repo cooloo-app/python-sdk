@@ -38,7 +38,7 @@ jobs:
           persist-credentials: false
       - name: Build fixtures and run C tests
         run: |
-          make -C server coolood
+          make -C server all
           make -C client test
           test -x client/cooloo-cli
           test -x server/coolood

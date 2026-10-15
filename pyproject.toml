@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cooloo"
+version = "0.1.0"
+description = "Python API and launcher for the cooloo GUI and CLI client"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "cooloo contributors"}]
+# License intentionally not invented: publication awaits owner approval.
+
+[project.scripts]
+cooloo = "cooloo.launcher:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+cooloo = ["py.typed", "_bin/*", "_licenses/*"]

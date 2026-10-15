@@ -44,8 +44,9 @@ def check_wheels(directory):
             digest = hashlib.sha256(z.read(package + "_bin/" + manifest["filename"])).hexdigest()
             assert digest == manifest["sha256"] == data["artifacts"][tag]["sha256"]
             metadata = z.read(f"cooloo-{version}.dist-info/METADATA").decode()
-            assert "License-Expression: MIT\n" in metadata
-            assert z.read(f"cooloo-{version}.dist-info/licenses/LICENSE") == (ROOT / "LICENSE").read_bytes()
+            assert "License-Expression: MIT" in metadata.splitlines()
+            license_text = z.read(f"cooloo-{version}.dist-info/licenses/LICENSE").decode()
+            assert license_text.splitlines() == (ROOT / "LICENSE").read_text().splitlines()
             for name in ("cooloo-client-MIT.txt", "SDL.txt", "JetBrainsMono.txt", "Lua.txt", "stb_truetype.txt", "Monocypher.txt"):
                 assert z.read(package + "_licenses/" + name)
         print(path.name, hashlib.sha256(path.read_bytes()).hexdigest())

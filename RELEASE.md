@@ -38,6 +38,10 @@ manual production PyPI upload, explicitly skipping TestPyPI. Rebuilt wheels must
 the SDK/client MIT licenses and existing third-party notices. Verify metadata and binary
 hashes before upload, then verify PyPI artifacts and supported-platform installation.
 Tag-triggered OIDC publishing and a build-only manual workflow are now prepared in
-`.github/workflows/`; see [PUBLISHING.md](PUBLISHING.md). Remote activation still requires
-pushing the workflow and pinned client/LFS inputs; the GitHub workflow has not yet run.
+`.github/workflows/`; see [PUBLISHING.md](PUBLISHING.md). Workflow and pinned client/LFS
+inputs have been pushed. Manual build-only run 38753907756 passed on GitHub:
+https://github.com/cooloo-app/python-sdk/actions/runs/38753907756
+Linux C/Python tests, macOS/Windows installed-wheel checks and combined artifact validation
+passed. PyPI upload and post-upload jobs were intentionally skipped; OIDC authentication
+will first be exercised by a separately authorized new-version tag release.
 Never store upload tokens in source, scripts, release notes or command-line arguments.

@@ -12,6 +12,7 @@ p.add_argument("--source-commit", required=True)
 p.add_argument("--version", default="0.2.3")
 p.add_argument("--sha256", required=True)
 p.add_argument("--client-source", type=Path, required=True, help="matching client checkout with vendored license notices")
+p.add_argument("--client-license", type=Path, help="owner-approved client license for older source snapshots")
 a = p.parse_args()
 blob = a.binary.read_bytes()
 if hashlib.sha256(blob).hexdigest() != a.sha256:
@@ -35,6 +36,7 @@ shutil.copyfile(a.binary, target / name)
 (target / name).chmod(0o755)
 notices = target.parent / "_licenses"
 notices.mkdir(exist_ok=True)
+shutil.copyfile(a.client_license or a.client_source / "LICENSE", notices / "cooloo-client-MIT.txt")
 vendor = a.client_source / "src/vendor"
 for source, notice_name in [("sdl3/LICENSE.txt", "SDL.txt"), ("fonts/OFL.txt", "JetBrainsMono.txt")]:
     shutil.copyfile(vendor / source, notices / notice_name)

@@ -1,0 +1,49 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: python-sdk
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Read pinned test inputs
+        id: inputs
+        run: python python-sdk/tools/release.py prepare --github-output "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.inputs.outputs.client_repository }}
+          ref: ${{ steps.inputs.outputs.client_commit }}
+          path: client
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.inputs.outputs.server_repository }}
+          ref: ${{ steps.inputs.outputs.server_commit }}
+          path: server
+          persist-credentials: false
+      - name: Build fixtures and run C tests
+        run: |
+          make -C server coolood
+          make -C client test
+          test -x client/cooloo-cli
+          test -x server/coolood
+      - name: Python integration and process tests (no skipped fixtures)
+        working-directory: python-sdk
+        env:
+          PYTHONPATH: src
+        run: python -m unittest discover -s tests -v

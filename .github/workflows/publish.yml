@@ -1,0 +1,147 @@
+name: publish
+
+on:
+  push:
+    tags: ['v*']
+  # Manual runs validate/build only; they never upload to PyPI.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      client_repository: ${{ steps.inputs.outputs.client_repository }}
+      client_commit: ${{ steps.inputs.outputs.client_commit }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate release inputs and tag version
+        id: inputs
+        env:
+          EVENT: ${{ github.event_name }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if [ "$EVENT" = push ]; then
+            python tools/release.py prepare --tag "$TAG" --github-output "$GITHUB_OUTPUT"
+          else
+            python tools/release.py prepare --github-output "$GITHUB_OUTPUT"
+          fi
+
+  ci:
+    needs: prepare
+    uses: ./.github/workflows/ci.yml
+
+  build:
+    needs: [prepare, ci]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-14
+            platform: macosx_11_0_arm64
+          - runner: windows-latest
+            platform: win_amd64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: python-sdk
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ needs.prepare.outputs.client_repository }}
+          ref: ${{ needs.prepare.outputs.client_commit }}
+          path: client
+          lfs: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Stage verified GUI+CLI and build wheel
+        working-directory: python-sdk
+        run: |
+          python -m pip install 'build>=1.2,<2' 'setuptools>=77,<83' 'wheel>=0.45,<1' 'twine>=6,<7'
+          python tools/release.py stage --client ../client --platform '${{ matrix.platform }}'
+          python -m build --wheel --no-isolation
+          python -m twine check dist/*.whl
+      - name: Install wheel and verify bundled CLI (no network)
+        working-directory: python-sdk
+        run: |
+          python -m pip install --no-deps dist/*.whl
+          python tools/smoke_wheel.py
+          python -m unittest discover -s tests -p test_process.py -v
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheel-${{ matrix.platform }}
+          path: python-sdk/dist/*.whl
+          if-no-files-found: error
+
+  validate:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: wheel-*
+          merge-multiple: true
+          path: dist
+      - run: python tools/release.py check
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pypi-dist
+          path: dist/*.whl
+          if-no-files-found: error
+
+  pypi:
+    needs: validate
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: pypi-dist
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          # Permit recovery after a partial two-file upload. The verify job
+          # rejects an existing file whose hash differs from this build.
+          skip-existing: true
+
+  verify:
+    needs: pypi
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: pypi-dist
+          path: dist
+      - run: python tools/release.py verify-pypi

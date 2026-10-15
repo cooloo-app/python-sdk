@@ -10,4 +10,5 @@
 - Distribute GUI+CLI platform wheels; do not publish a universal wheel or silently download binaries.
   Stage verified release artifacts with tools/stage_binary.py --client-source <client checkout>.
 - A stream must be explicitly closed on early exit; no implicit business ACK or SEND retries.
-- No automatic publish/push. Project license still requires owner approval before public package release.
+- No automatic publish/push without explicit authorization. Project-owned SDK and C client code
+  are MIT licensed; retain bundled third-party notices.

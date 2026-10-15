@@ -3,7 +3,7 @@
 Thin wrapper around the bundled C GUI+CLI client (0.2.3, JSONL schema 1).
 No Python Native/Noise implementation, SSH backend, daemon, or CLI-only distribution.
 Initial wheels target Windows x86_64 and macOS arm64. Python >=3.10.
-**Local release candidate: not yet published to PyPI. License/publication approval pending.**
+Licensed under MIT; bundled third-party components retain their own licenses.
 
 ## Installation / launch (after publication)
 
@@ -66,6 +66,12 @@ CoolooError exposes code/message. SendOutcomeUnknown means delivery may have hap
 never blindly retry. A valid server acknowledgement returns end_offset. No guarantees of
 thread-safe shared Client usage. No shell execution; SEND uses UTF-8 stdin, max 4096 bytes.
 
+## Automatic releases
+
+SDK version tags trigger tests, platform wheel builds and PyPI Trusted Publishing (OIDC,
+no API token). Manual workflow runs build and validate only. See
+[PUBLISHING.md](PUBLISHING.md) for setup, pinned native artifacts and release steps.
+
 ## Development and packaging
 
 ```sh
@@ -81,7 +87,8 @@ artifact with tools/stage_binary.py, then `python -m build --wheel`. The builder
 missing artifacts, changed hashes, and source distributions. macOS wheel tag must match
 the actual deployment target; do not infer it from the build host version. Keep the
 manifest's source commit/version/hash with the binary. The bundle must include third-party
-license notices before public distribution; the project's own license is owner-pending.
+license notices and the C client's MIT license before public distribution.
+See [LICENSE](LICENSE) for the Python SDK's MIT license.
 
 Source repository: https://github.com/cooloo-app/python-sdk . The planner includes it as
 `python-sdk/` submodule; package name and Python import remain `cooloo`.

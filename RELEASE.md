@@ -1,4 +1,16 @@
-# 0.1.0 local release candidate
+# 0.1.0 — published to PyPI
+
+Published directly to https://pypi.org/project/cooloo/0.1.0/ with owner authorization;
+TestPyPI was explicitly skipped. Both uploaded files were downloaded from PyPI and
+verified against local SHA256 values:
+
+- macOS wheel: `130bc1e229d709b4d02a0b4dba6af71eb00a20b95dd629fa1de400faaa9799b7`
+- Windows wheel: `24aecda8a3344460ab3029f2e3cde9564540ebdde9c2449048001c00a413e322`
+
+Final MIT packaging passed twine checks, bundled license/metadata/binary-hash checks,
+and Linux Python tests (7/7). Post-publication supported-platform pip installation
+has not yet been repeated. The local temporary upload credential file was removed;
+the owner must revoke the temporary token on PyPI.
 
 Bundles C client 0.2.3 from source `2ac3f027aca3b5f6a746e490bf5dd3384fc0b746`.
 GUI and CLI are the same executable; Python does not implement Native/Noise.
@@ -21,7 +33,11 @@ JSON, bounded stderr and cancellation. No exactly-once or complete history guara
 
 Build with tools/stage_binary.py (requires --client-source for vendor notices), then
 python -m build --wheel. Distribution is platform-wheel-only; no generic sdist.
-Publication checklist: owner license decision, repository/organization PyPI ownership,
-protected OIDC publishing environment, TestPyPI installation and explicit production
-upload authorization. Do not upload merely because a tag exists. No automatic publishing
-workflow is enabled while these prerequisites remain unresolved.
+The owner approved MIT licensing for project-owned SDK and C client code and authorized
+manual production PyPI upload, explicitly skipping TestPyPI. Rebuilt wheels must contain
+the SDK/client MIT licenses and existing third-party notices. Verify metadata and binary
+hashes before upload, then verify PyPI artifacts and supported-platform installation.
+Tag-triggered OIDC publishing and a build-only manual workflow are now prepared in
+`.github/workflows/`; see [PUBLISHING.md](PUBLISHING.md). Remote activation still requires
+pushing the workflow and pinned client/LFS inputs; the GitHub workflow has not yet run.
+Never store upload tokens in source, scripts, release notes or command-line arguments.

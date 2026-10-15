@@ -1,0 +1,110 @@
+"""Release checks shared by CI and local validation (Python 3.12 build tooling)."""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import re
+import subprocess
+import sys
+import time
+import tomllib
+import urllib.request
+from zipfile import ZipFile
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def load():
+    data = json.loads((ROOT / "release-inputs.json").read_text())
+    for key in ("client_commit", "client_source_commit", "server_commit"):
+        if not re.fullmatch(r"[0-9a-f]{40}", data[key]):
+            raise ValueError(f"{key} must be a full commit SHA")
+    version = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]["version"]
+    init = (ROOT / "src/cooloo/__init__.py").read_text()
+    if f'__version__ = "{version}"' not in init:
+        raise ValueError("SDK source and packaging versions differ")
+    return data, version
+
+
+def check_wheels(directory):
+    data, version = load()
+    files = sorted(directory.glob("*"))
+    expected = {f"cooloo-{version}-py3-none-{tag}.whl": tag for tag in data["artifacts"]}
+    if {p.name for p in files} != set(expected):
+        raise ValueError("Expected exactly the two platform wheels, no extra files")
+    for path in files:
+        tag = expected[path.name]
+        with ZipFile(path) as z:
+            manifest_path = next(n for n in z.namelist() if n.endswith("cooloo/_bin/manifest.json"))
+            package = manifest_path.removesuffix("_bin/manifest.json")
+            manifest = json.loads(z.read(manifest_path))
+            assert manifest["platform_tag"] == tag
+            assert manifest["version"] == data["client_version"]
+            assert manifest["source_commit"] == data["client_source_commit"]
+            digest = hashlib.sha256(z.read(package + "_bin/" + manifest["filename"])).hexdigest()
+            assert digest == manifest["sha256"] == data["artifacts"][tag]["sha256"]
+            metadata = z.read(f"cooloo-{version}.dist-info/METADATA").decode()
+            assert "License-Expression: MIT\n" in metadata
+            assert z.read(f"cooloo-{version}.dist-info/licenses/LICENSE") == (ROOT / "LICENSE").read_bytes()
+            for name in ("cooloo-client-MIT.txt", "SDL.txt", "JetBrainsMono.txt", "Lua.txt", "stb_truetype.txt", "Monocypher.txt"):
+                assert z.read(package + "_licenses/" + name)
+        print(path.name, hashlib.sha256(path.read_bytes()).hexdigest())
+    return files, version
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    sub = p.add_subparsers(dest="command", required=True)
+    q = sub.add_parser("prepare")
+    q.add_argument("--tag")
+    q.add_argument("--github-output", type=Path)
+    q = sub.add_parser("stage")
+    q.add_argument("--client", type=Path, required=True)
+    q.add_argument("--platform", required=True)
+    q = sub.add_parser("check")
+    q.add_argument("--dist", type=Path, default=ROOT / "dist")
+    q = sub.add_parser("verify-pypi")
+    q.add_argument("--dist", type=Path, default=ROOT / "dist")
+    a = p.parse_args()
+    data, version = load()
+    if a.command == "prepare":
+        if a.tag and a.tag != f"v{version}":
+            p.error(f"tag must be v{version}")
+        if a.github_output:
+            with a.github_output.open("a") as f:
+                for key in ("client_repository", "client_commit", "server_repository", "server_commit"):
+                    if "\n" in data[key] or "\r" in data[key]:
+                        raise ValueError("Invalid output value")
+                    f.write(f"{key}={data[key]}\n")
+        print(f"SDK {version}; release inputs valid")
+    elif a.command == "stage":
+        artifact = data["artifacts"][a.platform]
+        subprocess.run([sys.executable, str(ROOT / "tools/stage_binary.py"),
+                        str(a.client / "release" / artifact["filename"]),
+                        "--platform-tag", a.platform, "--source-commit", data["client_source_commit"],
+                        "--version", data["client_version"], "--sha256", artifact["sha256"],
+                        "--client-source", str(a.client),
+                        "--client-license", str(ROOT / "licenses/cooloo-client-MIT.txt")], check=True)
+    else:
+        files, version = check_wheels(a.dist)
+        if a.command == "verify-pypi":
+            for attempt in range(12):
+                try:
+                    with urllib.request.urlopen(f"https://pypi.org/pypi/cooloo/{version}/json", timeout=30) as r:
+                        remote = json.load(r)
+                    for path in files:
+                        entry = next(x for x in remote["urls"] if x["filename"] == path.name)
+                        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+                        assert entry["digests"]["sha256"] == digest
+                        with urllib.request.urlopen(entry["url"], timeout=30) as r:
+                            assert hashlib.sha256(r.read()).hexdigest() == digest
+                    print("PyPI metadata and downloaded files verified")
+                    break
+                except (OSError, StopIteration):
+                    if attempt == 11:
+                        raise
+                    time.sleep(10)
+
+
+if __name__ == "__main__":
+    main()

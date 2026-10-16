@@ -20,10 +20,10 @@ jobs:
       client_repository: ${{ steps.inputs.outputs.client_repository }}
       client_commit: ${{ steps.inputs.outputs.client_commit }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Validate release inputs and tag version
@@ -58,18 +58,18 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           path: python-sdk
           persist-credentials: false
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: ${{ needs.prepare.outputs.client_repository }}
           ref: ${{ needs.prepare.outputs.client_commit }}
           path: client
           lfs: true
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Stage verified GUI+CLI and build wheel
@@ -85,7 +85,7 @@ jobs:
           python -m pip install --no-deps dist/*.whl
           python tools/smoke_wheel.py
           python -m unittest discover -s tests -p test_process.py -v
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: wheel-${{ matrix.platform }}
           path: python-sdk/dist/*.whl
@@ -95,19 +95,19 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           pattern: wheel-*
           merge-multiple: true
           path: dist
       - run: python tools/release.py check
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: pypi-dist
           path: dist/*.whl
@@ -120,7 +120,7 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: pypi-dist
           path: dist
@@ -134,13 +134,13 @@ jobs:
     needs: pypi
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: pypi-dist
           path: dist

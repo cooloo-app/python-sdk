@@ -14,23 +14,23 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           path: python-sdk
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Read pinned test inputs
         id: inputs
         run: python python-sdk/tools/release.py prepare --github-output "$GITHUB_OUTPUT"
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: ${{ steps.inputs.outputs.client_repository }}
           ref: ${{ steps.inputs.outputs.client_commit }}
           path: client
           persist-credentials: false
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: ${{ steps.inputs.outputs.server_repository }}
           ref: ${{ steps.inputs.outputs.server_commit }}

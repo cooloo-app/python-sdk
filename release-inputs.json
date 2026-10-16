@@ -1,18 +1,18 @@
 {
   "client_repository": "cooloo-app/client",
-  "client_commit": "1985998ada6b25de92b6f759f379555346ad7326",
-  "client_source_commit": "2ac3f027aca3b5f6a746e490bf5dd3384fc0b746",
-  "client_version": "0.2.3",
+  "client_commit": "3d4758440aa0c4bf1a69e7d7c54248ddfd62a5f3",
+  "client_source_commit": "953f38f892a5ae1ff56f3ead51eaaba2ea92fd42",
+  "client_version": "0.2.4",
   "server_repository": "cooloo-app/server",
   "server_commit": "de4f3d21aecaa2190564c329608c02a9decd8010",
   "artifacts": {
     "macosx_11_0_arm64": {
       "filename": "cooloo-darwin-arm64",
-      "sha256": "701cdeab865967ec15a41a5d1d44ed607ceca2329d04a775f421e693d1fe84f8"
+      "sha256": "656f55bcaa8a5760468b8397e8628b5b04176a70e0487699f167f13ecfcd8e9e"
     },
     "win_amd64": {
       "filename": "cooloo-windows-x86_64.exe",
-      "sha256": "19079ec6c559eb58c5ddac6807669ba51b34fa830103246cdae003b7613fc28a"
+      "sha256": "c45904326045ee5fff57dac5261759970406ddfa59f866a7ab175c80179e83d4"
     }
   }
 }

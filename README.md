@@ -1,11 +1,11 @@
-# cooloo Python API and GUI launcher — 0.1.0
+# cooloo Python API and GUI launcher — 0.1.1
 
-Thin wrapper around the bundled C GUI+CLI client (0.2.3, JSONL schema 1).
+Thin wrapper around the bundled C GUI+CLI client (0.2.4, JSONL schema 1).
 No Python Native/Noise implementation, SSH backend, daemon, or CLI-only distribution.
 Initial wheels target Windows x86_64 and macOS arm64. Python >=3.10.
 Licensed under MIT; bundled third-party components retain their own licenses.
 
-## Installation / launch (after publication)
+## Installation / launch
 
 ```sh
 pip install cooloo
@@ -16,6 +16,26 @@ pipx run --spec cooloo cooloo --gui
 ```
 
 `cooloo` with no arguments also opens the GUI. Other commands are forwarded unchanged.
+
+### Upgrade to the Shanghai server
+
+```sh
+python -m pip install --upgrade cooloo
+# pipx users: pipx upgrade cooloo
+```
+
+Version 0.1.1 bundles client 0.2.4, whose default is `123.206.215.121:4222`.
+Persisted old official `43.133.202.144:4222` config is resolved to Shanghai; identity
+and history caches are not deleted or rewritten. An existing old-server pin is reused
+only when it equals the verified unchanged official fingerprint
+`e6da669a4763acc8e790c6c757f698eed8eeab2c56007a62d28fd48f421c06bf`.
+An explicit pin for Shanghai takes precedence; fresh installs still require first-use
+trust. Restart running GUI/Python processes after upgrading.
+
+**Explicit overrides are preserved:** if your environment sets `COOLOO_HOST` or your
+code passes `Client(host="43.133.202.144:4222")`, remove/update that override. Custom
+servers and nonstandard ports are not migrated. `Client()` uses the native default;
+no separate Python protocol or endpoint fallback is introduced.
 Unsigned/not notarized native artifacts retain their platform trust limitations.
 No runtime downloads, PATH lookup, implicit identity creation or registration.
 Unsupported platforms have no matching wheel; source users may explicitly supply a

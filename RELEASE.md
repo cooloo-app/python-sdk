@@ -1,3 +1,27 @@
+# 0.1.1 — Shanghai endpoint (2026-10-16)
+
+Bundles client v0.2.4, build source `953f38f892a5ae1ff56f3ead51eaaba2ea92fd42`,
+artifact commit `3d4758440aa0c4bf1a69e7d7c54248ddfd62a5f3` (client/LFS published).
+Default and persisted old official endpoint relocate to Shanghai; exact verified
+legacy trust pins remain usable without resetting identity/history. Explicit host
+arguments/environment, custom servers/ports and explicit new-host pins win.
+Fresh installations still require first-use trust. See README upgrade instructions.
+
+The wheel includes the current explicit-GUI native startup behavior; the Python
+launcher continues opening GUI with no arguments. No Python API/protocol change.
+
+Native validation: Linux/macOS isolated configuration, protocol/cache/Lua/startup
+regressions passed; macOS GUI-linked protocol integration and GUI first-frame passed.
+Windows real startup/redirection/keygen and explicit/debug GUI first-frame passed;
+desktop window/icon/console probe could not find a window in the SSH session.
+Full manual GUI, oldest supported OS/Python and full compatibility matrix remain
+unverified. Build-only and tag OIDC workflow results are recorded in planner release
+handoff after completion; pushing a tag alone is not publication evidence.
+
+Native SHA256:
+- macOS: `656f55bcaa8a5760468b8397e8628b5b04176a70e0487699f167f13ecfcd8e9e`
+- Windows: `c45904326045ee5fff57dac5261759970406ddfa59f866a7ab175c80179e83d4`
+
 # 0.1.0 — published to PyPI
 
 Published directly to https://pypi.org/project/cooloo/0.1.0/ with owner authorization;

@@ -1,4 +1,16 @@
-# 0.1.1 — Shanghai endpoint (2026-10-16)
+# 0.1.1 — published: Shanghai endpoint (2026-10-16)
+
+Published via GitHub OIDC Trusted Publishing; build-only run
+https://github.com/cooloo-app/python-sdk/actions/runs/38867104384 and tag run
+https://github.com/cooloo-app/python-sdk/actions/runs/38867325148 both passed.
+PyPI metadata and downloaded wheel bytes match the original workflow artifacts:
+- macOS wheel SHA256: `25b3113a6583d4d4891e81cdf57c8ddc165641e4f655b633cc1fb0871fb28c7c`
+- Windows wheel SHA256: `155787f0abb6468f1ab334176d024e7d0d59767c5d09462ff42783a89552a32b`
+
+Post-publication fresh Python 3.12 venv installs from official PyPI passed on m106
+(macOS arm64) and m101 (Windows x64): SDK/client versions, bundled binary hashes,
+JSON version output and GUI first-frame probes (30 ms / 1 ms). These do not claim
+full manual GUI validation. No production data was modified by release tests.
 
 Bundles client v0.2.4, build source `953f38f892a5ae1ff56f3ead51eaaba2ea92fd42`,
 artifact commit `3d4758440aa0c4bf1a69e7d7c54248ddfd62a5f3` (client/LFS published).

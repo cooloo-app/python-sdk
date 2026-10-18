@@ -26,6 +26,14 @@ def load():
     return data, version
 
 
+def load_client_manifest(client):
+    path = client / "release" / "manifest.json"
+    manifest = json.loads(path.read_text())
+    if manifest.get("schema_version") != 1:
+        raise ValueError("unsupported client release manifest schema")
+    return {entry["filename"]: entry for entry in manifest["artifacts"]}
+
+
 def check_wheels(directory):
     data, version = load()
     files = sorted(directory.glob("*"))
@@ -42,7 +50,8 @@ def check_wheels(directory):
             assert manifest["version"] == data["client_version"]
             assert manifest["source_commit"] == data["client_source_commit"]
             digest = hashlib.sha256(z.read(package + "_bin/" + manifest["filename"])).hexdigest()
-            assert digest == manifest["sha256"] == data["artifacts"][tag]["sha256"]
+            assert digest == manifest["sha256"]
+            assert manifest["source_commit"] == data["client_source_commit"]
             metadata = z.read(f"cooloo-{version}.dist-info/METADATA").decode()
             assert "License-Expression: MIT" in metadata.splitlines()
             license_text = z.read(f"cooloo-{version}.dist-info/licenses/LICENSE").decode()
@@ -80,10 +89,16 @@ def main():
         print(f"SDK {version}; release inputs valid")
     elif a.command == "stage":
         artifact = data["artifacts"][a.platform]
+        manifest = load_client_manifest(a.client)
+        entry = manifest.get(artifact["filename"])
+        if entry is None:
+            raise ValueError(f"{artifact['filename']} is missing from client release manifest")
+        if entry["source_commit"] != data["client_source_commit"]:
+            raise ValueError("client source commit does not match release manifest")
         subprocess.run([sys.executable, str(ROOT / "tools/stage_binary.py"),
-                        str(a.client / "release" / artifact["filename"]),
-                        "--platform-tag", a.platform, "--source-commit", data["client_source_commit"],
-                        "--version", data["client_version"], "--sha256", artifact["sha256"],
+                        str(a.client / "release" / entry["filename"]),
+                        "--platform-tag", a.platform, "--source-commit", entry["source_commit"],
+                        "--version", data["client_version"], "--sha256", entry["sha256"],
                         "--client-source", str(a.client),
                         "--client-license", str(ROOT / "licenses/cooloo-client-MIT.txt")], check=True)
     else:

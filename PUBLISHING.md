@@ -16,8 +16,9 @@ The workflow grants `id-token: write` only to the upload job.
 ## Release inputs
 
 `release-inputs.json` pins client/server repositories and full commit SHAs, the native
-client version/build-source commit, and both platform artifact SHA256 values. It uses
-verified GUI+CLI binaries in the client repository's Git LFS `release/` directory.
+client version/build-source commit, and the two platform artifact filenames. The
+client repository's Git LFS `release/manifest.json` is the source of truth for the
+selected binaries and SHA256 values; the release tooling verifies it before staging.
 Never substitute `latest` or a branch name. Publish client commits **and LFS objects**
 before enabling a release using them. The SDK does not rebuild native binaries in CI.
 
@@ -50,7 +51,8 @@ acceptance test or an oldest-supported-OS/Python compatibility matrix.
 
 1. Update `pyproject.toml` and `src/cooloo/__init__.py` to the same new version.
 2. Update README/release notes. Change `release-inputs.json` only when changing native
-   artifacts/test sources, after validation and publication of their pinned inputs.
+   artifact selection/test sources, after validation and publication of the pinned
+   client input. Artifact filenames and hashes come from the client manifest.
 3. Commit and push with explicit owner authorization. Run the build-only workflow first.
 4. Push a matching SDK tag, e.g. `v0.1.1`, with explicit release authorization.
 5. The tag workflow checks version equality, runs CI, builds both platform wheels,

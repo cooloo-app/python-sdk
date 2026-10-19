@@ -1,4 +1,21 @@
-# 0.1.4 — refreshed native binaries with Windows long-path fix (2026-10-20)
+# 0.1.4 — published: refreshed native binaries with Windows long-path fix (2026-10-20)
+
+Published SDK tag `v0.1.4` at source commit
+`e76f1603564a8c34bdcc4fc9b88dfbda5fdb9567` after successful build-only validation:
+https://github.com/cooloo-app/python-sdk/actions/runs/39298209588
+
+The tag workflow passed isolated C/Python CI, both installed-wheel smoke checks,
+package validation, OIDC upload and final PyPI verification:
+https://github.com/cooloo-app/python-sdk/actions/runs/39298614408
+
+The original tag-run wheels were checked against PyPI metadata and downloaded bytes.
+SHA256:
+- macOS arm64: `bbec4e36efb42bd1707b8738d635351fd5fb35035dacc7b64b63622e0b053585`
+- Windows x86_64: `c34de9c991551fe48ea0ee3fb381924e4342fc9390c30c842effee5afbd64aac`
+
+Both CI runners installed the local wheels and checked the `cooloo` and `cooloo-text`
+commands/processes. Fresh supported-platform installs from official PyPI and full manual
+GUI acceptance have not been repeated for 0.1.4.
 
 Refreshes the macOS arm64 and Windows x86_64 wheels with client 0.3.0 artifacts from
 client commit `4d05ea07f7e46c23746fa4dff3d039f1844fa0b4`, built from source

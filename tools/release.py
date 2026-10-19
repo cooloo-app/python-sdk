@@ -34,6 +34,12 @@ def load_client_manifest(client):
     return {entry["filename"]: entry for entry in manifest["artifacts"]}
 
 
+def bundled_filename(product, platform_tag):
+    if platform_tag not in {"macosx_11_0_arm64", "win_amd64"}:
+        raise ValueError(f"unsupported platform tag: {platform_tag}")
+    return product + (".exe" if platform_tag == "win_amd64" else "")
+
+
 def check_wheels(directory):
     data, version = load()
     files = sorted(directory.glob("*"))
@@ -53,7 +59,7 @@ def check_wheels(directory):
                 artifact = manifest["binaries"][product]
                 digest = hashlib.sha256(z.read(package + "_bin/" + artifact["filename"])).hexdigest()
                 assert digest == artifact["sha256"]
-                assert artifact["filename"] == product + (".exe" if tag == "win_amd64" else "")
+                assert artifact["filename"] == bundled_filename(product, tag)
             metadata = z.read(f"cooloo-{version}.dist-info/METADATA").decode()
             assert "License-Expression: MIT" in metadata.splitlines()
             license_text = z.read(f"cooloo-{version}.dist-info/licenses/LICENSE").decode()

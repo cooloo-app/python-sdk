@@ -1,4 +1,20 @@
-# 0.1.3 — waiting Windows launcher and refreshed native artifacts
+# 0.1.3 — published: waiting Windows launcher and refreshed native artifacts (2026-10-19)
+
+Published SDK tag `v0.1.3` at source commit
+`0c0db39f26b225116dcf5a71605f9ca7e5abeb89` after build-only validation:
+https://github.com/cooloo-app/python-sdk/actions/runs/39281039182
+
+The tag workflow passed isolated C/Python CI, both installed-wheel smoke checks,
+package validation, OIDC upload and final PyPI verification:
+https://github.com/cooloo-app/python-sdk/actions/runs/39284719327
+
+The original tag-run artifacts were also checked locally against PyPI metadata
+and downloaded wheel bytes. SHA256:
+- macOS arm64: `f9bc1145ac2d4cd204650de46bae1fafed6aec4cc40451372c604f3f77ae05ad`
+- Windows x86_64: `307af72a102e24793b87f72b4aac32952833200c1d332242141fe08ec0daff45`
+
+CI installed local wheels; fresh supported-platform installs from official PyPI
+and full manual GUI acceptance have not been repeated for 0.1.3.
 
 Includes the waiting Windows console launcher and `python -m cooloo` entry point.
 Refreshed client 0.3.0 binaries include terminal-only, complete-line trust confirmation

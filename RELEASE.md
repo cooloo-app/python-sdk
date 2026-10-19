@@ -1,3 +1,21 @@
+# 0.1.3 — waiting Windows launcher and refreshed native artifacts
+
+Includes the waiting Windows console launcher and `python -m cooloo` entry point.
+Refreshed client 0.3.0 binaries include terminal-only, complete-line trust confirmation
+and Windows terminal-input guards, plus the current workspace/read-state changes.
+Both `cooloo` and `cooloo-text` remain bundled on macOS arm64 and Windows x64.
+Integration coverage and API guidance now match the current parent-to-child
+DELEGATE direction; child credentials cannot act as the parent.
+
+Client artifact commit: `9448aaf6cade687c52422a1fad1517022b5c34d0`.
+Client build source: `cb21e62baac66cf965f2e2f751377ce49d392661`.
+Isolated test server: `028913043b1774d84073fbd2caaf6cc618492168`.
+
+Native release build, isolated protocol/headless/provider tests and static checks
+passed. Local Windows startup, GUI first-frame, window/icon and console probes
+passed. These checks do not constitute full manual GUI acceptance; macOS GUI,
+SDL dummy and oldest-supported-OS/Python matrix remain unverified.
+
 # 0.1.2 — published: client v0.3.0 and cooloo-text (2026-10-19)
 
 Published via recovery workflow after the initial tag run stopped before upload on a

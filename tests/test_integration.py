@@ -121,20 +121,26 @@ class Integration(unittest.TestCase):
         owner_id = owner.whoami()["id"]
         peer_id = peer.whoami()["id"]
         owner.avatar(1, child_id, "child")
-        acting = self.client("child", register=False, effective=owner_id)
+        # DELEGATE controls the parent's access to its ordinary child, not
+        # the child's access to the parent (server/DELEGATION.md).
+        child_as_owner = self.client("child", register=False, effective=owner_id)
+        with self.assertRaises(CoolooError):
+            child_as_owner.send(peer_id, "denied")
+        acting = self.client("owner", register=False, effective=child_id)
+        owner.delegate(child_id, "read")
         with self.assertRaises(CoolooError):
             acting.send(peer_id, "denied")
         owner.delegate(child_id, "write")
         end = acting.send(peer_id, "delegated")
         with peer.read(peer_id, offset=0) as stream:
-            self.assertEqual(next(stream).sender, owner_id)
+            self.assertEqual(next(stream).sender, child_id)
         owner.delegate(child_id, "read")
         self.assertEqual(acting.sent(peer_id, offset=0).messages[0].end_offset, end)
         with self.assertRaises(CoolooError) as error:
             acting.send(peer_id, "denied")
         self.assertEqual(error.exception.code, "forbidden")
         outsider.send(peer_id, "unrelated")
-        result = owner.sent(peer_id, offset=end)
+        result = acting.sent(peer_id, offset=end)
         self.assertEqual(result.messages, [])
         self.assertGreater(result.scan_offset, end)
         room = owner.create_room("private")["id"]

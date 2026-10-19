@@ -22,11 +22,12 @@ selected binaries and SHA256 values; the release tooling verifies it before stag
 Never substitute `latest` or a branch name. Publish client commits **and LFS objects**
 before enabling a release using them. The SDK does not rebuild native binaries in CI.
 
-The client v0.3.0 artifact commit `41101e8fa289a77f826c714434a20ccfb98947b0` and its
-LFS objects are the pinned input for this release. Server commit availability was also confirmed.
-For the historical client snapshot,
-`licenses/cooloo-client-MIT.txt` records the owner's MIT grant and is bundled alongside
-vendor notices; this does not change the recorded binary build-source commit.
+SDK 0.1.3 pins client artifact commit `9448aaf6cade687c52422a1fad1517022b5c34d0`,
+built from `cb21e62baac66cf965f2e2f751377ce49d392661` (client version 0.3.0).
+The client commit and LFS objects have been pushed. The test server is pinned to
+`028913043b1774d84073fbd2caaf6cc618492168`.
+`licenses/cooloo-client-MIT.txt` is bundled alongside vendor notices; this does
+not change the recorded binary build-source commit.
 
 ## Validate without publishing
 

@@ -1,4 +1,4 @@
-# cooloo Python API and GUI launcher — 0.1.2
+# cooloo Python API and GUI launcher — 0.1.3
 
 Thin wrapper around the bundled C GUI+CLI client and `cooloo-text` editor (0.3.0, JSONL schema 1).
 No Python Native/Noise implementation, SSH backend, daemon, or CLI-only distribution.
@@ -34,8 +34,8 @@ for the installed console entry point.
 With current client source, terminal trust confirmation requires this waiting
 launcher. Redirected input never confirms trust: verify the displayed fingerprint
 and explicitly use `-y/--tofu` for first-use automation. Changed pins still fail.
-These native protections require a future artifact refresh; this source change
-does not replace the binaries pinned in `release-inputs.json`.
+Version 0.1.3 includes these native protections in the bundled binaries pinned
+in `release-inputs.json`, together with the waiting launcher and module entry point.
 
 ### Upgrade to the Shanghai server
 
@@ -44,7 +44,7 @@ python -m pip install --upgrade cooloo
 # pipx users: pipx upgrade cooloo
 ```
 
-Version 0.1.2 bundles client 0.3.0, whose default is `123.206.215.121:4222`.
+Version 0.1.3 bundles refreshed client 0.3.0 artifacts, whose default is `123.206.215.121:4222`.
 Persisted old official `43.133.202.144:4222` config is resolved to Shanghai; identity
 and history caches are not deleted or rewritten. An existing old-server pin is reused
 only when it equals the verified unchanged official fingerprint
@@ -88,8 +88,9 @@ of a new config directory must exist. Private identity files must not be shared/
 
 Methods: keygen, register, whoami, rooms, create_room, meta, rename, avatar, send,
 read, follow, sent, join, approve_join, set_room_mode, delegate. Pass
-`effective_identity=owner_id` to select an explicitly delegated identity; failed AS
-never falls back to login identity. Administrative operations require actual owner
+`effective_identity=child_id` with the parent's credentials to select an ordinary
+child's message identity. `delegate(child_id, ...)` controls the parent's access to
+that child, not the child's access to its parent; failed AS never falls back to login identity. Administrative operations require actual owner
 credentials. `sent(peer, offset=...)` returns SentResult(messages, scan_offset), including
 an advanced cursor on empty filtered results. SENT never populates normal message caches.
 Private rooms currently permit any registered user to make them public: **not a

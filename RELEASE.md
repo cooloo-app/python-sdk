@@ -1,10 +1,20 @@
-# 0.1.2 — client v0.3.0 and cooloo-text (2026-10-19)
+# 0.1.2 — published: client v0.3.0 and cooloo-text (2026-10-19)
 
-Prepared for PyPI release. Bundles both `cooloo` and `cooloo-text` from client tag
-`v0.3.0`, client commit `41101e8fa289a77f826c714434a20ccfb98947b0`, built from source
-`017638f5e202c5035ebaf8dec4625fb71640dda8`. The SDK exposes both `cooloo` and
-`cooloo-text` console commands after `pipx install cooloo`. Client release verification
-passed its isolated builds and protocol tests; desktop GUI acceptance remains pending.
+Published via recovery workflow after the initial tag run stopped before upload on a
+wheel-validator filename comparison bug. Final workflow
+https://github.com/cooloo-app/python-sdk/actions/runs/39255874265 passed both platform
+builds, pinned client/server CI, package validation, OIDC upload, and PyPI verification.
+Bundles both `cooloo` and `cooloo-text` from client tag `v0.3.0`, client commit
+`41101e8fa289a77f826c714434a20ccfb98947b0`, built from source
+`017638f5e202c5035ebaf8dec4625fb71640dda8`. `pipx install cooloo` exposes both
+`cooloo` and `cooloo-text` commands.
+
+PyPI wheel SHA256:
+- macOS arm64: `94266e6792ab0f20bc4fdb08cfd78bbc827217d0883dcd9811d3ae87031dbc4b`
+- Windows x86_64: `87b0fac32db410556fbd957ba9457c41cfcb0ff0cf4c8d7d69a03651b2f0491d`
+
+Client release verification passed its isolated builds and protocol tests; desktop GUI
+acceptance remains pending.
 
 # 0.1.1 — published: Shanghai endpoint (2026-10-16)
 

@@ -53,7 +53,7 @@ def check_wheels(directory):
                 artifact = manifest["binaries"][product]
                 digest = hashlib.sha256(z.read(package + "_bin/" + artifact["filename"])).hexdigest()
                 assert digest == artifact["sha256"]
-                assert artifact["filename"] in {data["artifacts"][tag]["filename"], data["artifacts"][tag]["text_filename"]}
+                assert artifact["filename"] == product + (".exe" if tag == "win_amd64" else "")
             metadata = z.read(f"cooloo-{version}.dist-info/METADATA").decode()
             assert "License-Expression: MIT" in metadata.splitlines()
             license_text = z.read(f"cooloo-{version}.dist-info/licenses/LICENSE").decode()

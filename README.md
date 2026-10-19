@@ -17,8 +17,25 @@ pipx run --spec cooloo cooloo --gui
 pipx run --spec cooloo cooloo-text
 ```
 
-`cooloo` with no arguments also opens the GUI. `cooloo-text` launches the standalone text editor.
-Other commands are forwarded unchanged.
+`cooloo` with no arguments prints terminal help; use `cooloo --gui` for the GUI.
+`cooloo-text` launches the standalone text editor. Other commands are forwarded unchanged.
+
+On Windows, the installed `cooloo` console entry point waits for the bundled GUI
+executable and preserves stdin/stdout/stderr. No separate native CLI artifact is
+required. Desktop shortcuts may continue to target the native executable with `--gui`.
+If a standalone GUI `cooloo.exe` earlier on PATH shadows this entry point,
+PowerShell/CMD can return to their prompt while that process is still running.
+Check `Get-Command cooloo -All` (PowerShell) or `where cooloo` (CMD). Use
+`python -m cooloo whoami` with the Python environment where cooloo is installed
+to bypass PATH ambiguity; remove the obsolete PATH entry when appropriate.
+Do not copy the bundled `_bin/cooloo.exe` into a command directory as a replacement
+for the installed console entry point.
+
+With current client source, terminal trust confirmation requires this waiting
+launcher. Redirected input never confirms trust: verify the displayed fingerprint
+and explicitly use `-y/--tofu` for first-use automation. Changed pins still fail.
+These native protections require a future artifact refresh; this source change
+does not replace the binaries pinned in `release-inputs.json`.
 
 ### Upgrade to the Shanghai server
 

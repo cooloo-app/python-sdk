@@ -10,8 +10,10 @@ def _run(binary: str) -> int:
         args = [str(binary_path(product=binary)), *sys.argv[1:]]
         if os.name != "nt":
             os.execv(args[0], args)
-        # Explicit handles preserve redirected streams through the Python launcher.
-        proc = subprocess.Popen(args, stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr)
+        # The console entry point remains alive until the GUI-subsystem child exits.
+        # Let native interactive reads distinguish this from an unwaited shell launch.
+        env = dict(os.environ, COOLOO_LAUNCHER_WAIT="1")
+        proc = subprocess.Popen(args, stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr, env=env)
         try:
             return proc.wait()
         except KeyboardInterrupt:

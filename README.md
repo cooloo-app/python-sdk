@@ -1,9 +1,11 @@
-# cooloo Python API and GUI launcher — 0.1.3
+# cooloo Python API and GUI launcher — 0.1.4
 
 Thin wrapper around the bundled C GUI+CLI client and `cooloo-text` editor (0.3.0, JSONL schema 1).
 No Python Native/Noise implementation, SSH backend, daemon, or CLI-only distribution.
-Initial wheels target Windows x86_64 and macOS arm64. Python >=3.10.
+Wheels target Windows x86_64 and macOS arm64. Python >=3.10.
 Licensed under MIT; bundled third-party components retain their own licenses.
+
+Version 0.1.4 refreshes the bundled client 0.3.0 binaries with the Windows long-workspace-path fix.
 
 ## Installation / launch
 
@@ -34,8 +36,9 @@ for the installed console entry point.
 With current client source, terminal trust confirmation requires this waiting
 launcher. Redirected input never confirms trust: verify the displayed fingerprint
 and explicitly use `-y/--tofu` for first-use automation. Changed pins still fail.
-Version 0.1.3 includes these native protections in the bundled binaries pinned
-in `release-inputs.json`, together with the waiting launcher and module entry point.
+Version 0.1.4 includes these native protections and the Windows long-path fix in the
+bundled binaries pinned in `release-inputs.json`, together with the waiting launcher
+and module entry point.
 
 ### Upgrade to the Shanghai server
 
@@ -44,7 +47,7 @@ python -m pip install --upgrade cooloo
 # pipx users: pipx upgrade cooloo
 ```
 
-Version 0.1.3 bundles refreshed client 0.3.0 artifacts, whose default is `123.206.215.121:4222`.
+The bundled client 0.3.0 artifacts use `123.206.215.121:4222` as their default server.
 Persisted old official `43.133.202.144:4222` config is resolved to Shanghai; identity
 and history caches are not deleted or rewritten. An existing old-server pin is reused
 only when it equals the verified unchanged official fingerprint
@@ -59,7 +62,7 @@ no separate Python protocol or endpoint fallback is introduced.
 Unsigned/not notarized native artifacts retain their platform trust limitations.
 No runtime downloads, PATH lookup, implicit identity creation or registration.
 Unsupported platforms have no matching wheel; source users may explicitly supply a
-compatible local C executable. No source distribution is published in this first release.
+compatible local C executable. No source distribution is published.
 
 ## Python usage
 

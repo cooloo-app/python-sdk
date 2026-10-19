@@ -1,3 +1,11 @@
+# 0.1.4 — refreshed native binaries with Windows long-path fix (2026-10-20)
+
+Refreshes the macOS arm64 and Windows x86_64 wheels with client 0.3.0 artifacts from
+client commit `4d05ea07f7e46c23746fa4dff3d039f1844fa0b4`, built from source
+`ad67e65351a47d632d1fe4d7f20d22b4830adc6b`. The refreshed Windows client includes
+long-workspace-path support. Python API and launcher behavior are otherwise unchanged.
+The isolated test server remains `028913043b1774d84073fbd2caaf6cc618492168`.
+
 # 0.1.3 — published: waiting Windows launcher and refreshed native artifacts (2026-10-19)
 
 Published SDK tag `v0.1.3` at source commit

@@ -13,12 +13,13 @@ class PlatformWheel(bdist_wheel):
         super().finalize_options()
         manifest = ROOT / "src/cooloo/_bin/manifest.json"
         if not manifest.exists():
-            raise RuntimeError("Stage a verified GUI+CLI artifact with tools/stage_binary.py first")
+            raise RuntimeError("Stage verified cooloo and cooloo-text artifacts with tools/stage_binary.py first")
         data = json.loads(manifest.read_text())
         import hashlib
-        binary = manifest.parent / data["filename"]
-        if hashlib.sha256(binary.read_bytes()).hexdigest() != data["sha256"]:
-            raise RuntimeError("Staged executable checksum mismatch")
+        for product, artifact in data["binaries"].items():
+            binary = manifest.parent / artifact["filename"]
+            if hashlib.sha256(binary.read_bytes()).hexdigest() != artifact["sha256"]:
+                raise RuntimeError(f"Staged {product} executable checksum mismatch")
         self.root_is_pure = False
         self.plat_name = data["platform_tag"]
 

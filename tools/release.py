@@ -49,9 +49,11 @@ def check_wheels(directory):
             assert manifest["platform_tag"] == tag
             assert manifest["version"] == data["client_version"]
             assert manifest["source_commit"] == data["client_source_commit"]
-            digest = hashlib.sha256(z.read(package + "_bin/" + manifest["filename"])).hexdigest()
-            assert digest == manifest["sha256"]
-            assert manifest["source_commit"] == data["client_source_commit"]
+            for product in ("cooloo", "cooloo-text"):
+                artifact = manifest["binaries"][product]
+                digest = hashlib.sha256(z.read(package + "_bin/" + artifact["filename"])).hexdigest()
+                assert digest == artifact["sha256"]
+                assert artifact["filename"] in {data["artifacts"][tag]["filename"], data["artifacts"][tag]["text_filename"]}
             metadata = z.read(f"cooloo-{version}.dist-info/METADATA").decode()
             assert "License-Expression: MIT" in metadata.splitlines()
             license_text = z.read(f"cooloo-{version}.dist-info/licenses/LICENSE").decode()
@@ -88,18 +90,19 @@ def main():
                     f.write(f"{key}={data[key]}\n")
         print(f"SDK {version}; release inputs valid")
     elif a.command == "stage":
-        artifact = data["artifacts"][a.platform]
+        inputs = data["artifacts"][a.platform]
         manifest = load_client_manifest(a.client)
-        entry = manifest.get(artifact["filename"])
-        if entry is None:
-            raise ValueError(f"{artifact['filename']} is missing from client release manifest")
-        if entry["source_commit"] != data["client_source_commit"]:
+        entries = [manifest.get(inputs["filename"]), manifest.get(inputs["text_filename"])]
+        if any(entry is None for entry in entries):
+            raise ValueError("cooloo and cooloo-text are both required in the client release manifest")
+        if any(entry["source_commit"] != data["client_source_commit"] for entry in entries):
             raise ValueError("client source commit does not match release manifest")
         subprocess.run([sys.executable, str(ROOT / "tools/stage_binary.py"),
-                        str(a.client / "release" / entry["filename"]),
-                        "--platform-tag", a.platform, "--source-commit", entry["source_commit"],
-                        "--version", data["client_version"], "--sha256", entry["sha256"],
-                        "--client-source", str(a.client),
+                        str(a.client / "release" / entries[0]["filename"]),
+                        str(a.client / "release" / entries[1]["filename"]),
+                        "--platform-tag", a.platform, "--source-commit", data["client_source_commit"],
+                        "--version", data["client_version"], "--cooloo-sha256", entries[0]["sha256"],
+                        "--cooloo-text-sha256", entries[1]["sha256"], "--client-source", str(a.client),
                         "--client-license", str(ROOT / "licenses/cooloo-client-MIT.txt")], check=True)
     else:
         files, version = check_wheels(a.dist)

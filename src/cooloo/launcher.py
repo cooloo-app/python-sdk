@@ -5,9 +5,9 @@ import sys
 from .client import binary_path, CoolooError, _stop
 
 
-def main() -> int:
+def _run(binary: str) -> int:
     try:
-        args = [str(binary_path()), *sys.argv[1:]]
+        args = [str(binary_path(product=binary)), *sys.argv[1:]]
         if os.name != "nt":
             os.execv(args[0], args)
         # Explicit handles preserve redirected streams through the Python launcher.
@@ -21,6 +21,14 @@ def main() -> int:
         print(f"cooloo: {exc}", file=sys.stderr)
         return 1
     return 0
+
+
+def main() -> int:
+    return _run("cooloo")
+
+
+def text_main() -> int:
+    return _run("cooloo-text")
 
 
 if __name__ == "__main__":

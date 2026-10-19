@@ -16,14 +16,14 @@ The workflow grants `id-token: write` only to the upload job.
 ## Release inputs
 
 `release-inputs.json` pins client/server repositories and full commit SHAs, the native
-client version/build-source commit, and the two platform artifact filenames. The
+client version/build-source commit, and the cooloo/cooloo-text artifact filenames for both platforms. The
 client repository's Git LFS `release/manifest.json` is the source of truth for the
 selected binaries and SHA256 values; the release tooling verifies it before staging.
 Never substitute `latest` or a branch name. Publish client commits **and LFS objects**
 before enabling a release using them. The SDK does not rebuild native binaries in CI.
 
-The initial client artifact commit `1985998ada6b25de92b6f759f379555346ad7326` and its
-LFS objects have been pushed to GitHub. Server commit availability was also confirmed.
+The client v0.3.0 artifact commit `41101e8fa289a77f826c714434a20ccfb98947b0` and its
+LFS objects are the pinned input for this release. Server commit availability was also confirmed.
 For the historical client snapshot,
 `licenses/cooloo-client-MIT.txt` records the owner's MIT grant and is bundled alongside
 vendor notices; this does not change the recorded binary build-source commit.
@@ -43,7 +43,7 @@ python tools/release.py check --dist /path/to/dist
 ```
 
 CI builds isolated loopback test fixtures from pinned client/server commits. The wheel
-jobs install and check the bundled CLI on macOS arm64 and Windows x64. CLI smoke checks
+jobs install and check the both bundled `cooloo` and `cooloo-text` launchers on macOS arm64 and Windows x64. CLI smoke checks
 are offline; no production server, identity or message is used. This is not a full GUI
 acceptance test or an oldest-supported-OS/Python compatibility matrix.
 
@@ -54,7 +54,7 @@ acceptance test or an oldest-supported-OS/Python compatibility matrix.
    artifact selection/test sources, after validation and publication of the pinned
    client input. Artifact filenames and hashes come from the client manifest.
 3. Commit and push with explicit owner authorization. Run the build-only workflow first.
-4. Push a matching SDK tag, e.g. `v0.1.1`, with explicit release authorization.
+4. Push a matching SDK tag, e.g. `v0.1.2`, with explicit release authorization.
 5. The tag workflow checks version equality, runs CI, builds both platform wheels,
    checks bundled binary hashes/licenses, then uploads via OIDC. There is no TestPyPI step.
 6. Check the final verification job: it downloads PyPI artifacts and compares SHA256.

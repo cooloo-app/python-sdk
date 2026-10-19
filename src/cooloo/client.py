@@ -28,8 +28,11 @@ def _error(code: str, message: str) -> CoolooError:
     return (SendOutcomeUnknown if code == "send-outcome-unknown" else CoolooError)(code, message)
 
 
-def binary_path(explicit: str | Path | None = None) -> Path:
-    path = Path(explicit).expanduser().resolve() if explicit else Path(__file__).parent / "_bin" / ("cooloo.exe" if os.name == "nt" else "cooloo")
+def binary_path(explicit: str | Path | None = None, product: str = "cooloo") -> Path:
+    if product not in {"cooloo", "cooloo-text"}:
+        raise CoolooError("binary-invalid", f"unsupported bundled product: {product}")
+    filename = product + (".exe" if os.name == "nt" else "")
+    path = Path(explicit).expanduser().resolve() if explicit else Path(__file__).parent / "_bin" / filename
     if not path.is_file():
         raise CoolooError("binary-missing", "install the matching platform wheel or specify binary= explicitly")
     return path

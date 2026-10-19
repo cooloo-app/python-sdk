@@ -1,3 +1,11 @@
+# 0.1.2 — client v0.3.0 and cooloo-text (2026-10-19)
+
+Prepared for PyPI release. Bundles both `cooloo` and `cooloo-text` from client tag
+`v0.3.0`, client commit `41101e8fa289a77f826c714434a20ccfb98947b0`, built from source
+`017638f5e202c5035ebaf8dec4625fb71640dda8`. The SDK exposes both `cooloo` and
+`cooloo-text` console commands after `pipx install cooloo`. Client release verification
+passed its isolated builds and protocol tests; desktop GUI acceptance remains pending.
+
 # 0.1.1 — published: Shanghai endpoint (2026-10-16)
 
 Published via GitHub OIDC Trusted Publishing; build-only run

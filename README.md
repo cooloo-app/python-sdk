@@ -1,6 +1,6 @@
-# cooloo Python API and GUI launcher — 0.1.1
+# cooloo Python API and GUI launcher — 0.1.2
 
-Thin wrapper around the bundled C GUI+CLI client (0.2.4, JSONL schema 1).
+Thin wrapper around the bundled C GUI+CLI client and `cooloo-text` editor (0.3.0, JSONL schema 1).
 No Python Native/Noise implementation, SSH backend, daemon, or CLI-only distribution.
 Initial wheels target Windows x86_64 and macOS arm64. Python >=3.10.
 Licensed under MIT; bundled third-party components retain their own licenses.
@@ -11,11 +11,14 @@ Licensed under MIT; bundled third-party components retain their own licenses.
 pip install cooloo
 pipx install cooloo
 cooloo --gui
+cooloo-text
 # Or without a persistent pipx installation:
 pipx run --spec cooloo cooloo --gui
+pipx run --spec cooloo cooloo-text
 ```
 
-`cooloo` with no arguments also opens the GUI. Other commands are forwarded unchanged.
+`cooloo` with no arguments also opens the GUI. `cooloo-text` launches the standalone text editor.
+Other commands are forwarded unchanged.
 
 ### Upgrade to the Shanghai server
 
@@ -24,7 +27,7 @@ python -m pip install --upgrade cooloo
 # pipx users: pipx upgrade cooloo
 ```
 
-Version 0.1.1 bundles client 0.2.4, whose default is `123.206.215.121:4222`.
+Version 0.1.2 bundles client 0.3.0, whose default is `123.206.215.121:4222`.
 Persisted old official `43.133.202.144:4222` config is resolved to Shanghai; identity
 and history caches are not deleted or rewritten. An existing old-server pin is reused
 only when it equals the verified unchanged official fingerprint
@@ -100,10 +103,11 @@ PYTHONPATH=src python -m unittest discover -s tests -v
 
 Integration tests need sibling `client/cooloo-cli` and `server/coolood`, or explicit test
 binary overrides; all connections use temporary identities and loopback servers.
-This CLI-only build is a local test fixture, not the distributed product.
+This CLI-only build is a local test fixture, not the distributed product. The distributed
+platform wheels bundle both the `cooloo` and `cooloo-text` native products.
 
-Build each platform from a separate package source copy: stage its verified GUI+CLI
-artifact with tools/stage_binary.py, then `python -m build --wheel`. The builder refuses
+Build each platform from a separate package source copy: stage its verified `cooloo` and
+`cooloo-text` artifacts with tools/stage_binary.py, then `python -m build --wheel`. The builder refuses
 missing artifacts, changed hashes, and source distributions. macOS wheel tag must match
 the actual deployment target; do not infer it from the build host version. Keep the
 manifest's source commit/version/hash with the binary. The bundle must include third-party

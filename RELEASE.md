@@ -1,3 +1,12 @@
+# 0.1.5 — prepared for publication: client 0.3.2 editor fixes (2026-10-20)
+
+This version bundles the macOS arm64 and Windows x86_64 `cooloo` and `cooloo-text`
+artifacts from client commit `af30a69ce3b0b4a87bc63837ca33c60ae46c68b2`, built from source
+`0149d964c09708dfaa17cf5a2328990db3f19024`. The client patch includes editor shortcut/input suppression fixes.
+
+Release input hashes are generated from the client release manifest. Build-only validation,
+publication status and wheel hashes will be recorded after their respective checks.
+
 # 0.1.4 — published: refreshed native binaries with Windows long-path fix (2026-10-20)
 
 Published SDK tag `v0.1.4` at source commit

@@ -1,11 +1,25 @@
-# 0.1.5 — prepared for publication: client 0.3.2 editor fixes (2026-10-20)
+# 0.1.6 — prepared for publication: client 0.3.4 workspace synchronization (2026-10-21)
 
-This version bundles the macOS arm64 and Windows x86_64 `cooloo` and `cooloo-text`
-artifacts from client commit `af30a69ce3b0b4a87bc63837ca33c60ae46c68b2`, built from source
-`0149d964c09708dfaa17cf5a2328990db3f19024`. The client patch includes editor shortcut/input suppression fixes.
+Bundles macOS arm64 and Windows x86_64 `cooloo` and `cooloo-text` artifacts from client commit
+`ea448099c030ed730d5ae5d1b045bff2ece47156`, built from source `ed1f67cafe810d9ee79ec8d204875b59ce3e070a`. This release includes private workspace
+file synchronization and generation-bound shared read-state updates.
 
-Release input hashes are generated from the client release manifest. Build-only validation,
-publication status and wheel hashes will be recorded after their respective checks.
+Build-only validation, publication status and wheel hashes will be recorded after their respective checks.
+
+# 0.1.5 — published: client 0.3.2 editor fixes (2026-10-20)
+
+Published SDK tag `v0.1.5` at source commit `ad9488172eb1cbb4d25a1f434dcf838728718cc1`.
+Build-only validation: https://github.com/cooloo-app/python-sdk/actions/runs/39391871296
+Tag publication and PyPI verification: https://github.com/cooloo-app/python-sdk/actions/runs/39392360170
+
+PyPI wheel SHA256:
+- macOS arm64: `52dae7626abb294bfd03f43c9d222fe32e686d7c6d3aa6d1cb7d8d2b41c3dd78`
+- Windows x86_64: `b79d46a8033d4da1a6b403139e6aa76c85824cd0d857b2f686aafd083bfdf08f`
+
+The CI runners installed each wheel and checked both `cooloo` and `cooloo-text` launchers.
+Fresh supported-platform installs from PyPI and full manual GUI acceptance were not performed.
+The wheels bundle client 0.3.2 artifacts from client commit `af30a69ce3b0b4a87bc63837ca33c60ae46c68b2`,
+built from `0149d964c09708dfaa17cf5a2328990db3f19024`.
 
 # 0.1.4 — published: refreshed native binaries with Windows long-path fix (2026-10-20)
 

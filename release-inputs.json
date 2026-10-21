@@ -1,10 +1,10 @@
 {
   "client_repository": "cooloo-app/client",
-  "client_commit": "af30a69ce3b0b4a87bc63837ca33c60ae46c68b2",
-  "client_source_commit": "0149d964c09708dfaa17cf5a2328990db3f19024",
-  "client_version": "0.3.2",
+  "client_commit": "ea448099c030ed730d5ae5d1b045bff2ece47156",
+  "client_source_commit": "ed1f67cafe810d9ee79ec8d204875b59ce3e070a",
+  "client_version": "0.3.4",
   "server_repository": "cooloo-app/server",
-  "server_commit": "028913043b1774d84073fbd2caaf6cc618492168",
+  "server_commit": "c3b411b976467169f46b1924bb98e793a02f363a",
   "artifacts": {
     "macosx_11_0_arm64": {
       "filename": "cooloo-darwin-arm64",

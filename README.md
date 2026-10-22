@@ -64,6 +64,17 @@ No runtime downloads, PATH lookup, implicit identity creation or registration.
 Unsupported platforms have no matching wheel; source users may explicitly supply a
 compatible local C executable. No source distribution is published.
 
+## Protocol 3 source upgrade (not yet published to PyPI)
+
+This checkout's API supports `send(destination, content, message_id=uuid_hex)` and
+`Message.message_id`. Use a matching Protocol 3 C binary via `Client(binary=...)`;
+the existing 0.1.6 wheels/pinned release inputs are not automatically upgraded.
+Persist `uuid.uuid4().hex` before sending if retries must survive process loss.
+On `CoolooError`, `exception.message_id` identifies the attempted send. Explicitly
+retry with the same effective identity, destination, exact content and UUID; no
+automatic retry occurs. Different content requires a new UUID. The return value
+remains the actual end_offset. `duplicate-content` and `id-conflict` reject sends.
+
 ## Python usage
 
 ```python

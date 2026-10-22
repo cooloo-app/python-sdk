@@ -10,6 +10,7 @@ import queue
 import subprocess
 import threading
 import time
+import uuid
 from typing import Iterator
 
 
@@ -45,6 +46,7 @@ class Message:
     destination: str
     content: str
     end_offset: int
+    message_id: str = ""
 
     @classmethod
     def from_event(cls, event: dict) -> Message:
@@ -55,7 +57,7 @@ class Message:
             offset = event["end_offset"]
             if type(offset) is not int or offset < 0:
                 raise ValueError()
-            return cls(m["ts"], m["from"], m["to"], m["content"], offset)
+            return cls(m["ts"], m["from"], m["to"], m["content"], offset, m.get("id", ""))
         except (KeyError, TypeError, ValueError) as exc:
             raise CoolooError("protocol-error", "invalid message event") from exc
 
@@ -123,7 +125,7 @@ class EventStream:
                     event = json.loads(line.decode("utf-8"))
                 except (UnicodeError, ValueError) as exc:
                     raise CoolooError("protocol-error", "invalid JSONL") from exc
-                if not isinstance(event, dict) or event.get("schema") != 1 or event.get("type") not in {"message", "room", "result", "end", "error"}:
+                if not isinstance(event, dict) or event.get("schema") != 1 or event.get("type") not in {"message", "room", "result", "end", "error", "sending"}:
                     raise CoolooError("protocol-error", "unsupported event schema/type")
                 self._put(event)
         except Exception as exc:
@@ -272,7 +274,7 @@ class Client:
 
     def _result(self, *args: str, payload: bytes | None = None) -> dict:
         with self._stream(*args, payload=payload) as stream:
-            events = list(stream)
+            events = [event for event in stream if event["type"] != "sending"]
         if len(events) != 1 or events[0]["type"] != "result":
             raise CoolooError("protocol-error", "expected one result")
         return {k: v for k, v in events[0].items() if k not in {"schema", "type"}}
@@ -286,11 +288,18 @@ class Client:
     def whoami(self) -> dict:
         return self._result("whoami")
 
-    def send(self, destination: str, content: str) -> int:
+    def send(self, destination: str, content: str, *, message_id: str | None = None) -> int:
         payload = content.encode("utf-8")
         if not 1 <= len(payload) <= 4096 or b"\0" in payload:
             raise ValueError("content must be 1–4096 UTF-8 bytes without NUL")
-        return self._result("send", destination, payload=payload)["end_offset"]
+        mid = message_id or uuid.uuid4().hex
+        if len(mid) != 32 or uuid.UUID(hex=mid).version != 4 or uuid.UUID(hex=mid).hex != mid:
+            raise ValueError("message_id must be lowercase UUIDv4 hex")
+        try:
+            return self._result("send", destination, "--message-id", mid, payload=payload)["end_offset"]
+        except CoolooError as exc:
+            exc.message_id = mid
+            raise
 
     def read(self, destination: str, *, offset: int) -> MessageStream:
         return MessageStream(self._stream("read", destination, self._offset(offset)), offset, False)

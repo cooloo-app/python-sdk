@@ -1,13 +1,21 @@
-# 0.1.7 — prepared for publication: client 0.3.5 threads (2026-10-22)
+# 0.1.7 — published: client 0.3.5 message threads (2026-10-22)
 
-This version bundles macOS arm64 and Windows x86_64 `cooloo` and `cooloo-text`
-artifacts from client artifact commit `688b865853e61111e24a807fba8e4ae1769d94ea`, built from source
-`0168ae3ed715f26069df174716cca50b0086df2d` (client v0.3.5), tested against server commit `0a7d77e18efe9d44dc787cc27f7baf9e5e61d299`.
-The client adds GUI-only, client-side message threads and trimmed GUI sends; the SDK
-continues to expose its existing Python API and message-ID behavior.
+Published SDK tag `v0.1.7` at source commit `829910422f4e72d6eab9066c18245accd5b8b8ba`.
+Build-only validation: https://github.com/cooloo-app/python-sdk/actions/runs/39728073169
+Tag publication and PyPI verification: https://github.com/cooloo-app/python-sdk/actions/runs/39728369221
 
-Build-only validation, publication status and wheel hashes will be filled in after
-verification and release. No general-purpose wheel or source distribution is shipped.
+PyPI wheel SHA256:
+- macOS arm64: `856edb681e437e7e1ae3b6e3f29991f817e10c27b5b7ea2052e8c34d90f1a29e`
+- Windows x86_64: `aa4da949695d554451e3c498ee6734c382c76d523b5cd8bcd8f94100bd0198f7`
+
+CI passed pinned C/Python tests, macOS arm64 and Windows x86_64 wheel builds,
+installed-wheel checks for both `cooloo` and `cooloo-text`, package validation,
+OIDC upload and final PyPI metadata/download hash verification. Fresh supported-platform
+installs from PyPI and full manual GUI acceptance were not performed. Wheels bundle
+client v0.3.5 artifacts from client commit `688b865853e61111e24a807fba8e4ae1769d94ea`,
+built from `0168ae3ed715f26069df174716cca50b0086df2d`; tests pinned server commit
+`0a7d77e18efe9d44dc787cc27f7baf9e5e61d299`. Client-side threads do not change the server
+protocol or Python API.
 
 # 0.1.6 — published: client 0.3.4 workspace synchronization (2026-10-21)
 

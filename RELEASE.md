@@ -1,12 +1,20 @@
-# 0.1.8 — prepared for publication: client 0.3.6 editor integration fixes (2026-10-22)
+# 0.1.8 — published: client 0.3.6 editor integration fixes (2026-10-22)
 
-This version bundles client v0.3.6 macOS arm64 and Windows x86_64 `cooloo` and
-`cooloo-text` artifacts from client artifact commit `9f0e6275677cd2c6257b58cf785cb3d0472a76e2`, built from source
-`3e7fc44010b56a63e9815a7406856454658f6501`. SDK CI pins server v0.3.6 at
-`0a7d77e18efe9d44dc787cc27f7baf9e5e61d299`.
+Published SDK tag `v0.1.8` at source commit `9f9037101517d82dfc176dee5b7f3705c83596f7`.
+Build-only validation: https://github.com/cooloo-app/python-sdk/actions/runs/39734784039
+Tag publication and PyPI verification: https://github.com/cooloo-app/python-sdk/actions/runs/39735079743
 
-Client manifest hashes will be checked during staging. Build-only validation, tag-run,
-PyPI verification and wheel hashes will be recorded after those checks.
+PyPI wheel SHA256:
+- macOS arm64: `8168359bc12b0460e4d2fcdc79154e53981e4d790c32096c220b9f44d0c7338c`
+- Windows x86_64: `40749473641222eb5f66f549921abfbbb5be4989ad3c11f70d54e32ee84403e9`
+
+CI passed pinned C/Python tests, macOS arm64 and Windows x86_64 wheel builds,
+installed-wheel checks for `cooloo` and `cooloo-text`, package validation, OIDC upload,
+and final PyPI metadata/download hash verification. The wheels bundle client v0.3.6
+artifacts from client commit `9f0e6275677cd2c6257b58cf785cb3d0472a76e2`, built from
+`3e7fc44010b56a63e9815a7406856454658f6501`; CI used server v0.3.6 commit
+`0a7d77e18efe9d44dc787cc27f7baf9e5e61d299`. Fresh supported-platform installs and full
+manual GUI acceptance were not performed.
 
 # 0.1.7 — published: client 0.3.5 message threads (2026-10-22)
 

@@ -1,3 +1,13 @@
+# 0.1.8 — prepared for publication: client 0.3.6 editor integration fixes (2026-10-22)
+
+This version bundles client v0.3.6 macOS arm64 and Windows x86_64 `cooloo` and
+`cooloo-text` artifacts from client artifact commit `9f0e6275677cd2c6257b58cf785cb3d0472a76e2`, built from source
+`3e7fc44010b56a63e9815a7406856454658f6501`. SDK CI pins server v0.3.6 at
+`0a7d77e18efe9d44dc787cc27f7baf9e5e61d299`.
+
+Client manifest hashes will be checked during staging. Build-only validation, tag-run,
+PyPI verification and wheel hashes will be recorded after those checks.
+
 # 0.1.7 — published: client 0.3.5 message threads (2026-10-22)
 
 Published SDK tag `v0.1.7` at source commit `829910422f4e72d6eab9066c18245accd5b8b8ba`.

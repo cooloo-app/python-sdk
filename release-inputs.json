@@ -1,8 +1,8 @@
 {
   "client_repository": "cooloo-app/client",
-  "client_commit": "688b865853e61111e24a807fba8e4ae1769d94ea",
-  "client_source_commit": "0168ae3ed715f26069df174716cca50b0086df2d",
-  "client_version": "0.3.5",
+  "client_commit": "9f0e6275677cd2c6257b58cf785cb3d0472a76e2",
+  "client_source_commit": "3e7fc44010b56a63e9815a7406856454658f6501",
+  "client_version": "0.3.6",
   "server_repository": "cooloo-app/server",
   "server_commit": "0a7d77e18efe9d44dc787cc27f7baf9e5e61d299",
   "artifacts": {

@@ -61,10 +61,18 @@ class Integration(unittest.TestCase):
         a.rename(room, "renamed")
         self.assertTrue(any(r["id"] == room for r in b.rooms()))
         text = 'hello\n世界 " \\ --json --debug'
-        end = a.send(room, text)
+        mid = '550e8400e29b41d4a716446655440000'
+        end = a.send(room, text, message_id=mid)
+        self.assertEqual(a.send(room, text, message_id=mid), end)
+        with self.assertRaises(CoolooError) as conflict:
+            a.send(room, text + 'changed', message_id=mid)
+        self.assertEqual(conflict.exception.code, 'id-conflict')
+        self.assertEqual(conflict.exception.message_id, mid)
         with b.read(room, offset=0) as stream:
             messages = list(stream)
             self.assertEqual(stream.next_offset, end)
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(messages[0].message_id, mid)
         self.assertEqual(messages[0].content, text)
         self.assertEqual(messages[0].end_offset, end)
         with b.read(room, offset=end) as stream:

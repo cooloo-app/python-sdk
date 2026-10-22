@@ -1,3 +1,14 @@
+# 0.1.7 — prepared for publication: client 0.3.5 threads (2026-10-22)
+
+This version bundles macOS arm64 and Windows x86_64 `cooloo` and `cooloo-text`
+artifacts from client artifact commit `688b865853e61111e24a807fba8e4ae1769d94ea`, built from source
+`0168ae3ed715f26069df174716cca50b0086df2d` (client v0.3.5), tested against server commit `0a7d77e18efe9d44dc787cc27f7baf9e5e61d299`.
+The client adds GUI-only, client-side message threads and trimmed GUI sends; the SDK
+continues to expose its existing Python API and message-ID behavior.
+
+Build-only validation, publication status and wheel hashes will be filled in after
+verification and release. No general-purpose wheel or source distribution is shipped.
+
 # 0.1.6 — published: client 0.3.4 workspace synchronization (2026-10-21)
 
 Published SDK tag `v0.1.6` at source commit `bd2b56118f9a6ad04bf4b9fd74a11a04655132cd`.
@@ -180,7 +191,7 @@ Build with tools/stage_binary.py (requires --client-source for vendor notices), 
 python -m build --wheel. Distribution is platform-wheel-only; no generic sdist.
 The owner approved MIT licensing for project-owned SDK and C client code and authorized
 manual production PyPI upload, explicitly skipping TestPyPI. Rebuilt wheels must contain
-the SDK/client MIT licenses and existing third-party notices. Verify metadata and binary
+SDK/client MIT licenses and existing third-party notices. Verify metadata and binary
 hashes before upload, then verify PyPI artifacts and supported-platform installation.
 Tag-triggered OIDC publishing and a build-only manual workflow are now prepared in
 `.github/workflows/`; see [PUBLISHING.md](PUBLISHING.md). Workflow and pinned client/LFS

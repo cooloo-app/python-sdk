@@ -1,11 +1,11 @@
-# cooloo Python API and GUI launcher — 0.1.6
+# cooloo Python API and GUI launcher — 0.1.7
 
-Thin wrapper around the bundled C GUI+CLI client and `cooloo-text` editor (0.3.4, JSONL schema 1).
+Thin wrapper around the bundled C GUI+CLI client and `cooloo-text` editor (0.3.5, JSONL schema 1).
 No Python Native/Noise implementation, SSH backend, daemon, or CLI-only distribution.
 Wheels target Windows x86_64 and macOS arm64. Python >=3.10.
 Licensed under MIT; bundled third-party components retain their own licenses.
 
-Version 0.1.6 refreshes the bundled client 0.3.4 binaries with synchronized private workspace files and generation-bound read state.
+Version 0.1.7 refreshes the bundled client 0.3.5 binaries with client-side message threads and trimmed GUI sends.
 
 ## Installation / launch
 
@@ -36,7 +36,7 @@ for the installed console entry point.
 With current client source, terminal trust confirmation requires this waiting
 launcher. Redirected input never confirms trust: verify the displayed fingerprint
 and explicitly use `-y/--tofu` for first-use automation. Changed pins still fail.
-Version 0.1.6 includes these native protections and synchronized private workspace files and generation-bound read state in the
+Version 0.1.7 includes these native protections and client-side message threads and trimmed GUI sends in the
 bundled binaries pinned in `release-inputs.json`, together with the waiting launcher
 and module entry point.
 
@@ -47,7 +47,7 @@ python -m pip install --upgrade cooloo
 # pipx users: pipx upgrade cooloo
 ```
 
-The bundled client 0.3.4 artifacts use `123.206.215.121:4222` as their default server.
+The bundled client 0.3.5 artifacts use `123.206.215.121:4222` as their default server.
 Persisted old official `43.133.202.144:4222` config is resolved to Shanghai; identity
 and history caches are not deleted or rewritten. An existing old-server pin is reused
 only when it equals the verified unchanged official fingerprint
@@ -64,16 +64,16 @@ No runtime downloads, PATH lookup, implicit identity creation or registration.
 Unsupported platforms have no matching wheel; source users may explicitly supply a
 compatible local C executable. No source distribution is published.
 
-## Protocol 3 source upgrade (not yet published to PyPI)
+## Protocol 3 message IDs
 
-This checkout's API supports `send(destination, content, message_id=uuid_hex)` and
-`Message.message_id`. Use a matching Protocol 3 C binary via `Client(binary=...)`;
-the existing 0.1.6 wheels/pinned release inputs are not automatically upgraded.
-Persist `uuid.uuid4().hex` before sending if retries must survive process loss.
-On `CoolooError`, `exception.message_id` identifies the attempted send. Explicitly
-retry with the same effective identity, destination, exact content and UUID; no
-automatic retry occurs. Different content requires a new UUID. The return value
-remains the actual end_offset. `duplicate-content` and `id-conflict` reject sends.
+The SDK supports `send(destination, content, message_id=uuid_hex)` and
+`Message.message_id`. Use a matching Protocol 3 server; older Protocol 2 servers
+are not supported. Persist `uuid.uuid4().hex` before sending when retries must
+survive process loss. On `CoolooError`, `exception.message_id` identifies the
+attempted send. Explicitly retry with the same effective identity, destination,
+exact content and UUID; no automatic retry occurs. Different content requires a
+new UUID. The server returns the original offset for the same-ID retry;
+`duplicate-content` and `id-conflict` reject sends.
 
 ## Python usage
 

@@ -1,3 +1,13 @@
+# 0.1.9 — prepared for publication: client 0.3.8 double-width CJK rendering (2026-10-26)
+
+This version bundles client v0.3.8 macOS arm64 and Windows x86_64 `cooloo` and
+`cooloo-text` artifacts from client artifact commit `236e0702f924d9d82f73332a1ff942445f985583`, built from source
+`2e5327ce984e6722b60f081ef9a2ea353739e986`. SDK CI pins server v0.3.7 at
+`0a7d77e18efe9d44dc787cc27f7baf9e5e61d299`.
+
+Client manifest hashes will be checked during staging. Build-only validation, tag-run,
+PyPI verification and wheel hashes will be recorded after those checks.
+
 # 0.1.8 — published: client 0.3.6 editor integration fixes (2026-10-22)
 
 Published SDK tag `v0.1.8` at source commit `9f9037101517d82dfc176dee5b7f3705c83596f7`.

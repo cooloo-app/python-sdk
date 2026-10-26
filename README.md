@@ -1,11 +1,11 @@
-# cooloo Python API and GUI launcher — 0.1.8
+# cooloo Python API and GUI launcher — 0.1.9
 
-Thin wrapper around the bundled C GUI+CLI client and `cooloo-text` editor (0.3.6, JSONL schema 1).
+Thin wrapper around the bundled C GUI+CLI client and `cooloo-text` editor (0.3.8, JSONL schema 1).
 No Python Native/Noise implementation, SSH backend, daemon, or CLI-only distribution.
 Wheels target Windows x86_64 and macOS arm64. Python >=3.10.
 Licensed under MIT; bundled third-party components retain their own licenses.
 
-Version 0.1.8 refreshes the bundled client 0.3.6 binaries with latest editor integration and provider-bundle fixes.
+Version 0.1.9 refreshes the bundled client 0.3.8 binaries with double-width CJK font-grid rendering.
 
 ## Installation / launch
 
@@ -36,7 +36,7 @@ for the installed console entry point.
 With current client source, terminal trust confirmation requires this waiting
 launcher. Redirected input never confirms trust: verify the displayed fingerprint
 and explicitly use `-y/--tofu` for first-use automation. Changed pins still fail.
-Version 0.1.8 includes these native protections and the latest editor integration and provider-bundle fixes in the
+Version 0.1.9 includes these native protections and the double-width CJK font-grid rendering fixes in the
 bundled binaries pinned in `release-inputs.json`, together with the waiting launcher
 and module entry point.
 
@@ -47,7 +47,7 @@ python -m pip install --upgrade cooloo
 # pipx users: pipx upgrade cooloo
 ```
 
-The bundled client 0.3.6 artifacts use `123.206.215.121:4222` as their default server.
+The bundled client 0.3.8 artifacts use `123.206.215.121:4222` as their default server.
 Persisted old official `43.133.202.144:4222` config is resolved to Shanghai; identity
 and history caches are not deleted or rewritten. An existing old-server pin is reused
 only when it equals the verified unchanged official fingerprint

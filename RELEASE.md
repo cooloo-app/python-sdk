@@ -1,3 +1,12 @@
+# 0.1.10 — prepared for publication: client 0.3.9 (2026-10-28)
+
+This version bundles the macOS arm64 and Windows x86_64 `cooloo` and `cooloo-text`
+artifacts from client artifact commit `aa1eb97558b9e4dfe9170874376bd29f6b6fd3be`, built from source
+`a79cf517da3ad33677967c2de11dfed4cec97a43`. CI pins server v0.3.8 at
+`0a7d77e18efe9d44dc787cc27f7baf9e5e61d299`.
+
+The build-only validation, tag-run, PyPI verification, and wheel hashes will be recorded after checks.
+
 # 0.1.9 — prepared for publication: client 0.3.8 double-width CJK rendering (2026-10-26)
 
 This version bundles client v0.3.8 macOS arm64 and Windows x86_64 `cooloo` and

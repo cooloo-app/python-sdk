@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cooloo"
-version = "0.1.9"
+version = "0.1.10"
 description = "Python API and launcher for the cooloo GUI and CLI client"
 readme = "README.md"
 requires-python = ">=3.10"

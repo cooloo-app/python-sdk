@@ -1,3 +1,12 @@
+# 0.1.12 — prepared for publication: client 0.3.11 editor fixes (2026-10-28)
+
+This version bundles the macOS arm64 and Windows x86_64 `cooloo` and `cooloo-text`
+artifacts from client commit `ee681971a2e0fc870c61de2ff2335aa338eea492`, built from
+`921bdd6bf7820e00814d1d4d1a3578837b0348bc`. Client release verification passed on m106.
+
+The build-only workflow, tag publication and PyPI wheel hashes will be recorded after
+verification and publication.
+
 # 0.1.11 — published: client 0.3.10 idle UI scheduling (2026-10-28)
 
 Published SDK tag `v0.1.11` at source commit

@@ -1,3 +1,14 @@
+# 0.1.11 — prepared for publication: client 0.3.10 (2026-10-28)
+
+Client v0.3.10 includes the idle UI scheduling update. It updates scheduling of
+idle/background UI work; the Python API and Protocol 3 behavior remain unchanged.
+This version bundles the macOS arm64 and Windows x86_64 `cooloo` and `cooloo-text`
+artifacts from client artifact commit `2c30816e183caa4df07079fb2ab0503c3a4a149c`,
+built from source `003762779f425e69f56f51085af8fb69230f7425`. CI pins the isolated
+test server at `0a7d77e18efe9d44dc787cc27f7baf9e5e61d299`.
+
+Build-only validation, publication status and wheel hashes will be recorded after checks.
+
 # 0.1.10 — published: client 0.3.9 (2026-10-28)
 
 Published SDK tag `v0.1.10` at source commit

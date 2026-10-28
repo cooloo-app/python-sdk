@@ -1,13 +1,21 @@
-# 0.1.11 — prepared for publication: client 0.3.10 (2026-10-28)
+# 0.1.11 — published: client 0.3.10 idle UI scheduling (2026-10-28)
 
-Client v0.3.10 includes the idle UI scheduling update. It updates scheduling of
-idle/background UI work; the Python API and Protocol 3 behavior remain unchanged.
-This version bundles the macOS arm64 and Windows x86_64 `cooloo` and `cooloo-text`
-artifacts from client artifact commit `2c30816e183caa4df07079fb2ab0503c3a4a149c`,
-built from source `003762779f425e69f56f51085af8fb69230f7425`. CI pins the isolated
-test server at `0a7d77e18efe9d44dc787cc27f7baf9e5e61d299`.
+Published SDK tag `v0.1.11` at source commit
+`f2cb888ea1788dfd54be47f398a3f7faa279a0ce`.
+Build-only validation: https://github.com/cooloo-app/python-sdk/actions/runs/40661718122
+Tag publication and PyPI verification: https://github.com/cooloo-app/python-sdk/actions/runs/40662089453
 
-Build-only validation, publication status and wheel hashes will be recorded after checks.
+PyPI wheel SHA256:
+- macOS arm64: `27db136329663308092fbf7b1a4454fc2323ed33d675fc233f71c2f5f6891818`
+- Windows x86_64: `75f52a03f781c97fc27841ad55866cd7fe88253aeb1dc80e7b006e7b79b2ab2a`
+
+The workflow passed isolated C/Python tests, both platform wheel builds and installed-wheel
+checks for `cooloo` and `cooloo-text`, package validation, OIDC upload, and final PyPI
+metadata/download hash verification. Fresh supported-platform installs and full manual GUI
+acceptance were not performed. Wheels bundle client 0.3.10 artifacts from client commit
+`2c30816e183caa4df07079fb2ab0503c3a4a149c`, built from source
+`003762779f425e69f56f51085af8fb69230f7425`. CI pins server v0.3.8 at
+`0a7d77e18efe9d44dc787cc27f7baf9e5e61d299`.
 
 # 0.1.10 — published: client 0.3.9 (2026-10-28)
 
